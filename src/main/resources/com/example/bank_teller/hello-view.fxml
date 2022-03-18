@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.bank_teller.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <TabPane prefHeight="400.0" prefWidth="603.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Open/Close">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="108.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name :" />
+                        <Text layoutX="107.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name :" wrappingWidth="66.494140625" />
+                        <Button layoutX="189.0" layoutY="302.0" mnemonicParsing="false" text="Open " />
+                        <Button layoutX="355.0" layoutY="302.0" mnemonicParsing="false" text="Close" />
+                        <TextField layoutX="217.0" layoutY="44.0" prefHeight="27.0" prefWidth="166.0" />
+                        <TextField layoutX="215.0" layoutY="81.0" prefHeight="27.0" prefWidth="170.0" />
+                        <Text layoutX="104.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth :" />
+                        <DatePicker layoutX="213.0" layoutY="121.0" />
+                        <RadioButton layoutX="431.0" layoutY="152.0" mnemonicParsing="false" text="New Brunswick" />
+                        <RadioButton layoutX="431.0" layoutY="176.0" mnemonicParsing="false" text="Newark" />
+                        <RadioButton layoutX="431.0" layoutY="202.0" mnemonicParsing="false" text="Camden" />
+                        <RadioButton layoutX="148.0" layoutY="184.0" mnemonicParsing="false" text="Checking" />
+                        <RadioButton layoutX="265.0" layoutY="184.0" mnemonicParsing="false" text="College Checking" />
+                        <RadioButton layoutX="148.0" layoutY="236.0" mnemonicParsing="false" text="Savings" />
+                        <RadioButton layoutX="265.0" layoutY="236.0" mnemonicParsing="false" text="Money Market" />
+                        <CheckBox layoutX="430.0" layoutY="236.0" mnemonicParsing="false" text="Loyal Customer" />
+                        <Text layoutX="37.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account Type:" wrappingWidth="102.494140625" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Deposit/Withdraw" />
+            <Tab text="AccountDatabase">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </left>
+</BorderPane>
