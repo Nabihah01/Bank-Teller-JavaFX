@@ -21,91 +21,36 @@ public class BankTellerController {
     private final static int CAMDEN = 2;
 
     @FXML
-    private Tab accountDatabaseTab;
+    private Tab accountDatabaseTab, openCloseTab, depositWithdrawTab;
 
     @FXML
-    private ToggleGroup accountType;
+    private ToggleGroup accountType, campus;
 
     @FXML
-    private TextField amount;
+    private TextField amount, amountOC;
 
     @FXML
-    private RadioButton camdenOC;
+    private RadioButton checking, checkingOC, collegeChecking, collegeCheckingOC,
+            savings, savingsOC, moneyMarket, moneyMarketOC;
 
     @FXML
-    private ToggleGroup campus;
+    private DatePicker dob, dobOC;
 
     @FXML
-    private RadioButton checking;
-
-    @FXML
-    private RadioButton checkingOC;
-
-    @FXML
-    private RadioButton collegeChecking;
-
-    @FXML
-    private RadioButton collegeCheckingOC;
-
-    @FXML
-    private Tab depositWithdrawTab;
-
-    @FXML
-    private DatePicker dob;
-
-    @FXML
-    private DatePicker dobOC;
-
-    @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField firstNameOC;
-
-    @FXML
-    private TextField lastName;
-
-    @FXML
-    private TextField lastNameOC;
+    private TextField firstName, firstNameOC, lastName, lastNameOC;
 
     @FXML
     private CheckBox loyal;
 
     @FXML
-    private RadioButton moneyMarket;
+    private RadioButton newBrunswickOC, newarkOC, camdenOC;
 
     @FXML
-    private RadioButton moneyMarketOC;
+    private Button printAccounts, printByAccountType;
 
     @FXML
-    private RadioButton newBrunswickOC;
+    private TextArea textFieldAD, textFieldDW, textFieldOC;
 
-    @FXML
-    private RadioButton newarkOC;
-
-    @FXML
-    private Tab openCloseTab;
-
-    @FXML
-    private Button printAccounts;
-
-    @FXML
-    private Button printByAccountType;
-
-    @FXML
-    private RadioButton savings;
-
-    @FXML
-    private RadioButton savingsOC;
-
-    @FXML
-    private TextArea textFieldAD;
-
-    @FXML
-    private TextArea textFieldDW;
-
-    @FXML
-    private TextArea textFieldOC;
 
     @FXML
     void applyInterestAndFees(ActionEvent event) {
