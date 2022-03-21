@@ -19,25 +19,19 @@ public class BankTellerController {
     private final static int NEW_BRUNSWICK = 0;
     private final static int NEWARK = 1;
     private final static int CAMDEN = 2;
-    //TODO
-//    private void errorChecking(){
-//        //if college checking, and no campus selected
-//        //if savings, and loyal not selected
-//        //balance check numberformat
-//    }
 
     @FXML
     private Tab accountDatabaseTab, openCloseTab, depositWithdrawTab;
+
+    @FXML
+    private RadioButton checking, checkingOC, collegeChecking, collegeCheckingOC,
+            savings, savingsOC, moneyMarket, moneyMarketOC;
 
     @FXML
     private ToggleGroup accountType, campus;
 
     @FXML
     private TextField amount, amountOC;
-
-    @FXML
-    private RadioButton checking, checkingOC, collegeChecking, collegeCheckingOC,
-            savings, savingsOC, moneyMarket, moneyMarketOC;
 
     @FXML
     private DatePicker dob, dobOC;
@@ -54,31 +48,52 @@ public class BankTellerController {
     @FXML
     private TextArea textFieldAD, textFieldDW, textFieldOC;
 
+    @FXML
+    void initialize() {
+        newBrunswickOC.setDisable(true);
+        newarkOC.setDisable(true);
+        camdenOC.setDisable(true);
+        loyal.setDisable(true);
+    }
+
     //event handling when user clicks on savings,checking,mm,or cc(disabling/enabling elements)
     @FXML
-    void savingsButton(ActionEvent event){
-        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);camdenOC.setDisable(true);
+    void savingsButton(ActionEvent event) {
+        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);
+        camdenOC.setDisable(true);
         loyal.setDisable(false);
         loyal.setSelected(false);
     }
     @FXML
     void checkingButton(ActionEvent event){
-        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);camdenOC.setDisable(true);
+        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);
+        camdenOC.setDisable(true);
         loyal.setDisable(true);
     }
     @FXML
     void mmButton(ActionEvent event){
-        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);camdenOC.setDisable(true);
-        loyal.setDisable(false);
+        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);
+        camdenOC.setDisable(true);
+//        loyal.setDisable(false);
         loyal.setSelected(true);
     }
     @FXML
     void ccButton(ActionEvent event){
-        newBrunswickOC.setDisable(false); newarkOC.setDisable(false);camdenOC.setDisable(false);
+        newBrunswickOC.setDisable(false);
+        newarkOC.setDisable(false);
+        camdenOC.setDisable(false);
         loyal.setDisable(true);
     }
 
-
+    boolean accTypeIsSelected(boolean isOCTab) {
+        if(isOCTab) {
+            return checkingOC.isSelected() || savingsOC.isSelected() ||
+                    moneyMarketOC.isSelected() || savingsOC.isSelected();
+        } else {
+            return checking.isSelected() || savings.isSelected() ||
+                    moneyMarket.isSelected() || savings.isSelected();
+        }
+    }
 
     @FXML
     void applyInterestAndFees(ActionEvent event) {
@@ -123,11 +138,14 @@ public class BankTellerController {
 
     @FXML
     void open(ActionEvent event) {
-        if (firstNameOC.getText() == null || lastNameOC.getText() == null || dobOC.getValue() ==null){
+        if (firstNameOC.getText().isBlank() || lastNameOC.getText().isBlank() ||
+                dobOC.getValue() == null || amountOC.getText().isBlank()
+                || !accTypeIsSelected(true)) {
             textFieldOC.setText("Missing information for opening account.");
             clearText();
             return;
         }
+
         Date todayDate = new Date();
         Date date = new Date(dobOC.getValue().toString());
         if(date.compareTo(todayDate) == 1){
@@ -138,9 +156,19 @@ public class BankTellerController {
 
         Profile profile = new Profile(firstNameOC.getText() + " " + lastNameOC.getText() + " " + dobOC.getValue().toString());
 
-        double balance = Double.parseDouble(amountOC.getText());
-        Account account = createAccount("O", profile, balance);
+        double balance;
+        try {
+            balance = Double.parseDouble(amountOC.getText());
+        } catch (NumberFormatException e) {
+            textFieldOC.setText("Not a valid amount");
+            return;
+        }
 
+        Account account = createAccount("O", profile, balance);
+        openHelperMethod(account);
+    }
+
+    void openHelperMethod(Account account) {
         boolean accountOpened;
         if(account == null) {
             clearText();
@@ -190,7 +218,8 @@ public class BankTellerController {
 
     @FXML
     void close(ActionEvent event) {
-        if (firstNameOC.getText() == null || lastNameOC.getText() == null || dobOC.getValue() ==null){
+        if (firstNameOC.getText().isBlank() || lastNameOC.getText().isBlank() ||
+                dobOC.getValue() == null || !accTypeIsSelected(true)) {
             textFieldOC.setText("Missing information for closing account.");
             clearText();
             return;
@@ -204,7 +233,8 @@ public class BankTellerController {
             return;
         }
 
-        Profile profile = new Profile(firstNameOC.getText() + " " + lastNameOC.getText() + " " + dobOC.getValue().toString());
+        Profile profile = new Profile(firstNameOC.getText() + " " + lastNameOC.getText()
+                + " " + dobOC.getValue().toString());
 
         Account account = createAccount("C", profile, 0);
         if(account == null) {
@@ -218,12 +248,13 @@ public class BankTellerController {
             textFieldOC.setText("Account closed.");
         }
         clearText();
-
     }
 
     @FXML
     void deposit(ActionEvent event) {
-        if (firstName.getText() == null || lastName.getText() == null || dob.getValue() ==null){
+        if (firstName.getText().isBlank() || lastName.getText().isBlank() ||
+                dob.getValue() == null || amountOC.getText().isBlank()
+                || !accTypeIsSelected(false)) {
             textFieldDW.setText("Missing information for depositing.");
             clearText();
             return;
@@ -239,7 +270,13 @@ public class BankTellerController {
         Profile profile = new Profile(firstName.getText() + " " + lastName.getText() + " "
                 + dob.getValue().toString());
 
-        double balance = Double.parseDouble(amount.getText());
+        double balance;
+        try {
+            balance = Double.parseDouble(amount.getText());
+        } catch (NumberFormatException e) {
+            textFieldDW.setText("Not a valid amount");
+            return;
+        }
         Account account = createAccount("D", profile, balance);
 
         if(account == null) {
@@ -252,7 +289,8 @@ public class BankTellerController {
             return;
         }
         if(accountDatabase.callFind(account) == NOT_FOUND) {
-            textFieldDW.setText(account.holder.toString() + " " + account.getType() + " is not in the database.");
+            textFieldDW.setText(account.holder.toString() + " " + account.getType()
+                    + " is not in the database.");
             clearText();
             return;
         }
@@ -263,7 +301,9 @@ public class BankTellerController {
 
     @FXML
     void withdraw(ActionEvent event) {
-        if (firstName.getText() == null || lastName.getText() == null || dob.getValue() ==null){
+        if (firstName.getText().isBlank() || lastName.getText().isBlank() ||
+                dob.getValue() == null || amountOC.getText().isBlank() ||
+                !accTypeIsSelected(false)) {
             textFieldDW.setText("Missing information for withdrawing.");
             clearText();
             return;
@@ -279,7 +319,13 @@ public class BankTellerController {
         Profile profile = new Profile(firstName.getText() + " " + lastName.getText()
                 + " " + dob.getValue().toString());
 
-        double balance = Double.parseDouble(amount.getText());
+        double balance;
+        try {
+            balance = Double.parseDouble(amount.getText());
+        } catch (NumberFormatException e) {
+            textFieldDW.setText("Not a valid amount");
+            return;
+        }
         Account account = createAccount("W", profile, balance);
 
         if(account == null) {
@@ -308,6 +354,7 @@ public class BankTellerController {
             textFieldDW.setText("Withdraw - balance updated.");
         clearText();
     }
+
     private void clearText(){
         amount.clear();
         amountOC.clear();
@@ -315,36 +362,35 @@ public class BankTellerController {
         lastNameOC.clear();
         firstName.clear();
         firstNameOC.clear();
-        dob.setValue(null);
-        dobOC.setValue(null);
-        if(campus.getSelectedToggle()!=null){
+        dob.getEditor().clear();
+        dobOC.getEditor().clear();
+        if(campus.getSelectedToggle()!= null) {
             campus.getSelectedToggle().setSelected(false);
         }
         if(accountType.getSelectedToggle() != null) {
             accountType.getSelectedToggle().setSelected(false);
         }
         loyal.setSelected(false);
-
     }
 
     private int toIntCampusCode(String code){
-        if(code.equals("New Brunswick")){
+        if(code.equals("New Brunswick")) {
             return NEW_BRUNSWICK;
         }
-        else if(code.equals("Newark")){
+        else if(code.equals("Newark")) {
             return NEWARK;
         }
-        else{
+        else {
             return CAMDEN;
         }
     }
 
     public Account createAccount(String command, Profile profile, double balance) {
-
         if(((RadioButton) accountType.getSelectedToggle()).getText().equals("Checking")){
             return new Checking(profile, false, balance);
         }
-        else if(((RadioButton) accountType.getSelectedToggle()).getText().equals("College Checking")) {
+        else if(((RadioButton) accountType.getSelectedToggle()).getText()
+                .equals("College Checking")) {
             int campusCode = 0;
             if(command.equals("O")) {
                 if(campus.getSelectedToggle() == null){
@@ -352,19 +398,25 @@ public class BankTellerController {
                     clearText();
                     return null;
                 }
-                campusCode = toIntCampusCode( ((RadioButton)campus.getSelectedToggle()).getText());
+                campusCode = toIntCampusCode(((RadioButton)campus.getSelectedToggle())
+                        .getText());
             }
             return new CollegeChecking(profile, false, balance, campusCode);
         }
-        else if(((RadioButton) accountType.getSelectedToggle()).getText().equals("Savings")) {
+        else if(((RadioButton) accountType.getSelectedToggle()).getText()
+                .equals("Savings")) {
             if(command.equals("O")) {
-                if(loyal.isSelected()){
-                    return new Savings(profile, false,balance, 1);
+                if(loyal.isSelected()) {
+                    return new Savings(profile, false, balance, 1);
+                }
+                else {
+                    return new Savings(profile, false, balance, 0);
                 }
             }
             return new Savings(profile, false,balance, 0);
         }
-        else if(((RadioButton) accountType.getSelectedToggle()).getText().equals("Money Market")) {
+        else if(((RadioButton) accountType.getSelectedToggle()).getText()
+                .equals("Money Market")) {
             return new MoneyMarket(profile, false, balance);
         }
         return null;
