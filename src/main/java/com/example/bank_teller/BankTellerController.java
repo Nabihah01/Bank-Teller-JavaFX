@@ -19,6 +19,12 @@ public class BankTellerController {
     private final static int NEW_BRUNSWICK = 0;
     private final static int NEWARK = 1;
     private final static int CAMDEN = 2;
+    //TODO
+//    private void errorChecking(){
+//        //if college checking, and no campus selected
+//        //if savings, and loyal not selected
+//        //balance check numberformat
+//    }
 
     @FXML
     private Tab accountDatabaseTab, openCloseTab, depositWithdrawTab;
@@ -47,6 +53,32 @@ public class BankTellerController {
 
     @FXML
     private TextArea textFieldAD, textFieldDW, textFieldOC;
+
+    //event handling when user clicks on savings,checking,mm,or cc(disabling/enabling elements)
+    @FXML
+    void savingsButton(ActionEvent event){
+        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);camdenOC.setDisable(true);
+        loyal.setDisable(false);
+        loyal.setSelected(false);
+    }
+    @FXML
+    void checkingButton(ActionEvent event){
+        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);camdenOC.setDisable(true);
+        loyal.setDisable(true);
+    }
+    @FXML
+    void mmButton(ActionEvent event){
+        newBrunswickOC.setDisable(true); newarkOC.setDisable(true);camdenOC.setDisable(true);
+        loyal.setDisable(false);
+        loyal.setSelected(true);
+    }
+    @FXML
+    void ccButton(ActionEvent event){
+        newBrunswickOC.setDisable(false); newarkOC.setDisable(false);camdenOC.setDisable(false);
+        loyal.setDisable(true);
+    }
+
+
 
     @FXML
     void applyInterestAndFees(ActionEvent event) {
@@ -91,10 +123,16 @@ public class BankTellerController {
 
     @FXML
     void open(ActionEvent event) {
+        if (firstNameOC.getText() == null || lastNameOC.getText() == null || dobOC.getValue() ==null){
+            textFieldOC.setText("Missing information for opening account.");
+            clearText();
+            return;
+        }
         Date todayDate = new Date();
         Date date = new Date(dobOC.getValue().toString());
         if(date.compareTo(todayDate) == 1){
             textFieldOC.setText("Invalid Date of Birth!");
+            clearText();
             return;
         }
 
@@ -104,16 +142,20 @@ public class BankTellerController {
         Account account = createAccount("O", profile, balance);
 
         boolean accountOpened;
-        if(account == null)
+        if(account == null) {
+            clearText();
             return;
+        }
         if(account.balance <= 0.0) {
             textFieldOC.setText("Initial deposit cannot be 0 or negative.");
+            clearText();
             return;
         }
 
         if(account.getType().equals("Money Market")) {
             if(account.balance < MIN_AMT_FOR_MM) {
                 textFieldOC.setText("Minimum of $2500 to open a MoneyMarket account.");
+                clearText();
                 return;
             }
         }
@@ -123,6 +165,7 @@ public class BankTellerController {
                 (account.getType().equals("College Checking") && cInd != NOT_FOUND)) {
             textFieldOC.setText(account.holder.toString() + " same account(type) " +
                     "is in the database.");
+            clearText();
             return;
         }
 
@@ -142,15 +185,22 @@ public class BankTellerController {
         }
         else
             textFieldOC.setText("Account opened.");
+        clearText();
     }
 
     @FXML
     void close(ActionEvent event) {
+        if (firstNameOC.getText() == null || lastNameOC.getText() == null || dobOC.getValue() ==null){
+            textFieldOC.setText("Missing information for closing account.");
+            clearText();
+            return;
+        }
         Date todayDate = new Date();
         Date date = new Date(dobOC.getValue().toString());
 
         if(date.compareTo(todayDate) == 1){
             textFieldOC.setText("Invalid Date of Birth!");
+            clearText();
             return;
         }
 
@@ -158,6 +208,7 @@ public class BankTellerController {
 
         Account account = createAccount("C", profile, 0);
         if(account == null) {
+            clearText();
             return;
         }
         if (!accountDatabase.close(account)){
@@ -166,15 +217,22 @@ public class BankTellerController {
         else {
             textFieldOC.setText("Account closed.");
         }
+        clearText();
 
     }
 
     @FXML
     void deposit(ActionEvent event) {
+        if (firstName.getText() == null || lastName.getText() == null || dob.getValue() ==null){
+            textFieldDW.setText("Missing information for depositing.");
+            clearText();
+            return;
+        }
         Date date = new Date(dob.getValue().toString());
         Date todayDate = new Date();
         if(date.compareTo(todayDate) == 1){
             textFieldDW.setText("Invalid Date of Birth!");
+            clearText();
             return;
         }
 
@@ -185,27 +243,37 @@ public class BankTellerController {
         Account account = createAccount("D", profile, balance);
 
         if(account == null) {
+            clearText();
             return;
         }
         if(account.balance <= 0.0) {
             textFieldDW.setText("Deposit - amount cannot be 0 or negative.");
+            clearText();
             return;
         }
         if(accountDatabase.callFind(account) == NOT_FOUND) {
             textFieldDW.setText(account.holder.toString() + " " + account.getType() + " is not in the database.");
+            clearText();
             return;
         }
         accountDatabase.deposit(account);
         textFieldDW.setText("Deposit - balance updated.");
+        clearText();
     }
 
     @FXML
     void withdraw(ActionEvent event) {
+        if (firstName.getText() == null || lastName.getText() == null || dob.getValue() ==null){
+            textFieldDW.setText("Missing information for withdrawing.");
+            clearText();
+            return;
+        }
         Date date = new Date(dob.getValue().toString());
         Date todayDate = new Date();
 
         if(date.compareTo(todayDate) == 1){
             textFieldDW.setText("Invalid Date of Birth!");
+            clearText();
             return;
         }
         Profile profile = new Profile(firstName.getText() + " " + lastName.getText()
@@ -215,17 +283,20 @@ public class BankTellerController {
         Account account = createAccount("W", profile, balance);
 
         if(account == null) {
+            clearText();
             return;
         }
 
         if (account.balance <= 0.0) {
             textFieldDW.setText("Withdraw - amount cannot be 0 or negative.");
+            clearText();
             return;
         }
 
         if(accountDatabase.callFind(account) == NOT_FOUND) {
             textFieldDW.setText(account.holder.toString() + " " + account.getType()
                     + " is not in the database.");
+            clearText();
             return;
         }
 
@@ -235,6 +306,37 @@ public class BankTellerController {
             textFieldDW.setText("Withdraw - insufficient fund.");
         else
             textFieldDW.setText("Withdraw - balance updated.");
+        clearText();
+    }
+    private void clearText(){
+        amount.clear();
+        amountOC.clear();
+        lastName.clear();
+        lastNameOC.clear();
+        firstName.clear();
+        firstNameOC.clear();
+        dob.setValue(null);
+        dobOC.setValue(null);
+        if(campus.getSelectedToggle()!=null){
+            campus.getSelectedToggle().setSelected(false);
+        }
+        if(accountType.getSelectedToggle() != null) {
+            accountType.getSelectedToggle().setSelected(false);
+        }
+        loyal.setSelected(false);
+
+    }
+
+    private int toIntCampusCode(String code){
+        if(code.equals("New Brunswick")){
+            return NEW_BRUNSWICK;
+        }
+        else if(code.equals("Newark")){
+            return NEWARK;
+        }
+        else{
+            return CAMDEN;
+        }
     }
 
     public Account createAccount(String command, Profile profile, double balance) {
@@ -243,17 +345,15 @@ public class BankTellerController {
             return new Checking(profile, false, balance);
         }
         else if(((RadioButton) accountType.getSelectedToggle()).getText().equals("College Checking")) {
-            int campusCode;
+            int campusCode = 0;
             if(command.equals("O")) {
-                campusCode= Integer.parseInt(((RadioButton) campus.getSelectedToggle()).getText());
-                if(campusCode != NEW_BRUNSWICK && campusCode != NEWARK && campusCode != CAMDEN){
-                    textFieldOC.setText("Invalid campus code!");
+                if(campus.getSelectedToggle() == null){
+                    textFieldOC.setText("Please select campus");
+                    clearText();
                     return null;
                 }
+                campusCode = toIntCampusCode( ((RadioButton)campus.getSelectedToggle()).getText());
             }
-            else
-                campusCode = 0; //DUMMY for W, D, or C
-
             return new CollegeChecking(profile, false, balance, campusCode);
         }
         else if(((RadioButton) accountType.getSelectedToggle()).getText().equals("Savings")) {
