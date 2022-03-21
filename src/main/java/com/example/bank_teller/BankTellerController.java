@@ -46,15 +46,10 @@ public class BankTellerController {
     private RadioButton newBrunswickOC, newarkOC, camdenOC;
 
     @FXML
-    private Button printAccounts, printByAccountType;
-
-    @FXML
     private TextArea textFieldAD, textFieldDW, textFieldOC;
-
 
     @FXML
     void applyInterestAndFees(ActionEvent event) {
-        //add print statements to textfield
         if(accountDatabase.getNumAcct() == 0) {
             textFieldAD.setText("Account Database is empty!");
             return;
@@ -64,73 +59,50 @@ public class BankTellerController {
             accounts[i].balance -= accounts[i].fee();
             accounts[i].balance += accounts[i].monthlyInterest();
         }
-//        textFieldAD.setText(accountDatabase.print());
-
+        textFieldAD.setText(accountDatabase.print());
     }
 
     @FXML
     void calculateInterestandFees(ActionEvent event) {
-
+        if(accountDatabase.getNumAcct() == 0) {
+            textFieldAD.setText("Account Database is empty!");
+            return;
+        }
+        textFieldAD.setText(accountDatabase.printFeeAndInterest());
     }
 
     @FXML
-    void close(ActionEvent event) {
-        Profile profile = new Profile(firstNameOC.getText() + lastNameOC.getText() + dobOC.toString());
-        Date todayDate = new Date();
-        Date date = new Date(dobOC.toString());
-        if(!date.isValid() || date.compareTo(todayDate) == 1){
-            textFieldOC.setText("Invalid Date of Birth!");
+    void printAccounts(ActionEvent event) {
+        if(accountDatabase.getNumAcct() == 0) {
+            textFieldAD.setText("Account Database is empty!");
             return;
         }
-        Account account = createAccount("C", profile);
-        if(account == null){
-            return;
-        }
-        if (!accountDatabase.close(account)){
-            textFieldOC.setText("Account is closed already.");
-        }
-        else {
-            textFieldOC.setText("Account closed.");
-        }
-
+        textFieldAD.setText(accountDatabase.print());
     }
 
     @FXML
-    void deposit(ActionEvent event) {
-        Profile profile = new Profile(firstName.getText() + lastName.getText() + dob.toString());
-        Date todayDate = new Date();
-        Date date = new Date(dobOC.toString());
-        if(!date.isValid() || date.compareTo(todayDate) == 1){
-            textFieldOC.setText("Invalid Date of Birth!");
+    void printByAccountType(ActionEvent event) {
+        if(accountDatabase.getNumAcct() == 0) {
+            textFieldAD.setText("Account Database is empty!");
             return;
         }
-        Account account = createAccount("D", profile);
-        if(account == null){
-            return;
-        }
-        if(account.balance <= 0.0) {
-            textFieldDW.setText("Deposit - amount cannot be 0 or negative.");
-            return;
-        }
-        if(accountDatabase.callFind(account) == NOT_FOUND) {
-            textFieldDW.setText(account.holder.toString() + " " + account.getType() + " is not in the database.");
-            return;
-        }
-        accountDatabase.deposit(account);
-        textFieldDW.setText("Deposit - balance updated.");
-
+        textFieldAD.setText(accountDatabase.printByAccountType());
     }
 
     @FXML
     void open(ActionEvent event) {
-        Profile profile = new Profile(firstNameOC.getText() + lastNameOC.getText() + dobOC.toString());
         Date todayDate = new Date();
-        Date date = new Date(dobOC.toString());
-        if(!date.isValid() || date.compareTo(todayDate) == 1){
+        Date date = new Date(dobOC.getValue().toString());
+        if(date.compareTo(todayDate) == 1){
             textFieldOC.setText("Invalid Date of Birth!");
             return;
         }
-        Account account = createAccount("O", profile);
+
+        Profile profile = new Profile(firstNameOC.getText() + " " + lastNameOC.getText() + " " + dobOC.getValue().toString());
+
+        double balance = Double.parseDouble(amountOC.getText());
+        Account account = createAccount("O", profile, balance);
+
         boolean accountOpened;
         if(account == null)
             return;
@@ -170,34 +142,102 @@ public class BankTellerController {
         }
         else
             textFieldOC.setText("Account opened.");
+    }
+
+    @FXML
+    void close(ActionEvent event) {
+        Date todayDate = new Date();
+        Date date = new Date(dobOC.getValue().toString());
+
+        if(date.compareTo(todayDate) == 1){
+            textFieldOC.setText("Invalid Date of Birth!");
+            return;
+        }
+
+        Profile profile = new Profile(firstNameOC.getText() + " " + lastNameOC.getText() + " " + dobOC.getValue().toString());
+
+        Account account = createAccount("C", profile, 0);
+        if(account == null) {
+            return;
+        }
+        if (!accountDatabase.close(account)){
+            textFieldOC.setText("Account is closed already.");
+        }
+        else {
+            textFieldOC.setText("Account closed.");
+        }
 
     }
 
     @FXML
-    void printAccounts(ActionEvent event) {
-        //add print statements to textfield
-        if(accountDatabase.getNumAcct() == 0) {
-            textFieldAD.setText("Account Database is empty!");
+    void deposit(ActionEvent event) {
+        Date date = new Date(dob.getValue().toString());
+        Date todayDate = new Date();
+        if(date.compareTo(todayDate) == 1){
+            textFieldDW.setText("Invalid Date of Birth!");
             return;
         }
-        System.out.println("*list of accounts with fee and monthly interest*");
-        accountDatabase.printFeeAndInterest();
-        System.out.println("*end of list*");
 
+        Profile profile = new Profile(firstName.getText() + " " + lastName.getText() + " "
+                + dob.getValue().toString());
+
+        double balance = Double.parseDouble(amount.getText());
+        Account account = createAccount("D", profile, balance);
+
+        if(account == null) {
+            return;
+        }
+        if(account.balance <= 0.0) {
+            textFieldDW.setText("Deposit - amount cannot be 0 or negative.");
+            return;
+        }
+        if(accountDatabase.callFind(account) == NOT_FOUND) {
+            textFieldDW.setText(account.holder.toString() + " " + account.getType() + " is not in the database.");
+            return;
+        }
+        accountDatabase.deposit(account);
+        textFieldDW.setText("Deposit - balance updated.");
     }
 
     @FXML
     void withdraw(ActionEvent event) {
+        Date date = new Date(dob.getValue().toString());
+        Date todayDate = new Date();
 
+        if(date.compareTo(todayDate) == 1){
+            textFieldDW.setText("Invalid Date of Birth!");
+            return;
+        }
+        Profile profile = new Profile(firstName.getText() + " " + lastName.getText()
+                + " " + dob.getValue().toString());
+
+        double balance = Double.parseDouble(amount.getText());
+        Account account = createAccount("W", profile, balance);
+
+        if(account == null) {
+            return;
+        }
+
+        if (account.balance <= 0.0) {
+            textFieldDW.setText("Withdraw - amount cannot be 0 or negative.");
+            return;
+        }
+
+        if(accountDatabase.callFind(account) == NOT_FOUND) {
+            textFieldDW.setText(account.holder.toString() + " " + account.getType()
+                    + " is not in the database.");
+            return;
+        }
+
+        boolean withdrawSuccessful;
+        withdrawSuccessful = accountDatabase.withdraw(account);
+        if(!withdrawSuccessful)
+            textFieldDW.setText("Withdraw - insufficient fund.");
+        else
+            textFieldDW.setText("Withdraw - balance updated.");
     }
 
-    public Account createAccount(String command, Profile profile) {
-        //possibly put balance in respective open, withdraw, deposit methods
-        double balance = 0;
-
-        if(command.equals("O") || command.equals("W") || command.equals("D")){
-            balance = Double.parseDouble(amount.getText());
-        }
+    public Account createAccount(String command, Profile profile, double balance) {
 
         if(((RadioButton) accountType.getSelectedToggle()).getText().equals("Checking")){
             return new Checking(profile, false, balance);
@@ -229,5 +269,4 @@ public class BankTellerController {
         }
         return null;
     }
-
 }

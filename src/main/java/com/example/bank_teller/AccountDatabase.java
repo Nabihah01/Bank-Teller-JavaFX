@@ -145,16 +145,18 @@ public class AccountDatabase {
     /**
      * Print all accounts in accounts array
      */
-    public void print() {
+    public String print() {
+        String output = "";
         for(int i = 0; i < this.numAcct; i++){
-            System.out.println(this.accounts[i].toString());
+            output = output.concat(this.accounts[i].toString() + "\n");
         }
+        return output;
     }
 
     /**
      * Prints all accounts ordered by Account Type
      */
-    public void printByAccountType() {
+    public String printByAccountType() {
         for (int i = 1; i < numAcct; i++) {
             Account acc = accounts[i];
             int j = i - 1;
@@ -165,19 +167,20 @@ public class AccountDatabase {
             }
             accounts[j + 1] = acc;
         }
-        print();
+        return print();
     }
 
     /**
      * Prints all the accounts and their monthly fees and monthly interest
      */
-    public void printFeeAndInterest() {
+    public String printFeeAndInterest() {
+        String output = "";
         for(int i = 0; i < this.numAcct; i++){
-            System.out.println(this.accounts[i].toString() + "::fee $" +
+            output = output.concat(this.accounts[i].toString() + "::fee $" +
                     Account.df.format(this.accounts[i].fee()) + "::monthly interest $"
-                    + Account.df.format(this.accounts[i].monthlyInterest()));
+                    + Account.df.format(this.accounts[i].monthlyInterest()) + "\n");
         }
-
+        return output;
     }
 
     /**

@@ -137,7 +137,7 @@
                                     </Button>
                                  </children>
                               </HBox>
-                              <TextArea fx:id="textFieldOC" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <TextArea fx:id="textFieldOC" prefHeight="100.0" prefWidth="100.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <Label text="Amount" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="50.0" />
@@ -281,12 +281,12 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="printAccounts" mnemonicParsing="false" onAction="#printAccounts" prefHeight="25.0" prefWidth="209.0" text="Print All Accounts">
+                              <Button mnemonicParsing="false" onAction="#printAccounts" prefHeight="25.0" prefWidth="209.0" text="Print All Accounts">
                                  <GridPane.margin>
                                     <Insets left="20.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button fx:id="printByAccountType" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Print All Accounts Sorted by Types" GridPane.rowIndex="1">
+                              <Button mnemonicParsing="false" onAction="#printByAccountType" prefHeight="25.0" prefWidth="200.0" text="Print All Accounts Sorted by Types" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="20.0" />
                                  </GridPane.margin>
@@ -303,7 +303,7 @@
                               </Button>
                            </children>
                         </GridPane>
-                        <TextArea layoutX="108.0" layoutY="189.0" prefHeight="155.0" prefWidth="390.0" />
+                        <TextArea fx:id="textFieldAD" layoutX="108.0" layoutY="189.0" prefHeight="155.0" prefWidth="390.0" />
                      </children></AnchorPane>
                </content>
             </Tab>

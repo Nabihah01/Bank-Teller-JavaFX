@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bank_teller.BankTellerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bank_teller.BankTellerController">
    <left>
       <TabPane prefHeight="400.0" prefWidth="603.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -13,18 +13,18 @@
               <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                          <GridPane layoutX="26.0" layoutY="14.0" prefHeight="347.0" prefWidth="536.0">
+                          <GridPane layoutX="5.0" layoutY="10.0" prefHeight="351.0" prefWidth="584.0">
                               <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.66666666666669" minWidth="10.0" prefWidth="137.66666666666666" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="346.33333333333337" minWidth="10.0" prefWidth="297.3333333333333" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="0.0" prefWidth="107.33333333333331" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.66666666666669" minWidth="10.0" prefWidth="125.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="346.33333333333337" minWidth="10.0" prefWidth="313.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="0.0" prefWidth="98.66666666666669" />
                               </columnConstraints>
                               <rowConstraints>
                                   <RowConstraints maxHeight="53.33333333333333" minHeight="10.0" prefHeight="27.3333371480306" vgrow="SOMETIMES" />
                                   <RowConstraints maxHeight="55.33332951863607" minHeight="0.0" prefHeight="33.33333333333334" vgrow="SOMETIMES" />
                                   <RowConstraints maxHeight="77.33333333333334" minHeight="0.0" prefHeight="37.99999237060547" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="98.33334096272787" minHeight="0.0" prefHeight="65.66666666666669" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="16.333333333333343" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="98.33334096272787" minHeight="0.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="33.66666666666666" vgrow="SOMETIMES" />
                                   <RowConstraints maxHeight="112.33333333333334" minHeight="10.0" prefHeight="26.66668192545572" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="125.66665140787762" minHeight="10.0" prefHeight="125.66665140787762" vgrow="SOMETIMES" />
                               </rowConstraints>
@@ -117,13 +117,13 @@
                                  <children>
                                     <RadioButton fx:id="newBrunswickOC" mnemonicParsing="false" prefHeight="17.0" prefWidth="107.0" text="New Brunswick" toggleGroup="$campus">
                                        <VBox.margin>
-                                          <Insets top="10.0" />
+                                          <Insets top="5.0" />
                                        </VBox.margin>
                                     </RadioButton>
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                              <HBox prefHeight="19.0" prefWidth="295.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <HBox prefHeight="35.0" prefWidth="295.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <children>
                                           <Button mnemonicParsing="false" onAction="#open" text="Open">
                                        <HBox.margin>
@@ -137,7 +137,17 @@
                                     </Button>
                                  </children>
                               </HBox>
-                              <TextArea fx:id="textFieldOC" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <TextArea fx:id="textFieldOC" prefHeight="100.0" prefWidth="100.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label text="Amount" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="50.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="amountOC" prefHeight="25.0" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="20.0" right="50.0" />
+                                 </GridPane.margin>
+                              </TextField>
                               </children>
                           </GridPane>
                       </children></AnchorPane>
@@ -236,12 +246,12 @@
                               </GridPane>
                               <HBox prefHeight="37.0" prefWidth="379.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                  <children>
-                                      <Button mnemonicParsing="false" onAction="#withdraw" text="Withdraw">
+                                      <Button mnemonicParsing="false" onAction="#withdraw" prefHeight="25.0" prefWidth="71.0" text="Withdraw">
                                        <HBox.margin>
                                           <Insets left="20.0" right="20.0" />
                                        </HBox.margin>
                                     </Button>
-                                      <Button mnemonicParsing="false" onAction="#deposit" text="Deposit ">
+                                      <Button mnemonicParsing="false" onAction="#deposit" prefHeight="25.0" prefWidth="71.0" text="Deposit ">
                                        <HBox.margin>
                                           <Insets left="30.0" />
                                        </HBox.margin>
@@ -271,12 +281,12 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="printAccounts" mnemonicParsing="false" onAction="#printAccounts" prefHeight="25.0" prefWidth="209.0" text="Print All Accounts">
+                              <Button mnemonicParsing="false" onAction="#printAccounts" prefHeight="25.0" prefWidth="209.0" text="Print All Accounts">
                                  <GridPane.margin>
                                     <Insets left="20.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button fx:id="printByAccountType" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Print All Accounts Sorted by Types" GridPane.rowIndex="1">
+                              <Button mnemonicParsing="false" onAction="#printByAccountType" prefHeight="25.0" prefWidth="200.0" text="Print All Accounts Sorted by Types" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="20.0" />
                                  </GridPane.margin>
@@ -293,7 +303,7 @@
                               </Button>
                            </children>
                         </GridPane>
-                        <TextArea layoutX="108.0" layoutY="189.0" prefHeight="155.0" prefWidth="390.0" />
+                        <TextArea fx:id="textFieldAD" layoutX="108.0" layoutY="189.0" prefHeight="155.0" prefWidth="390.0" />
                      </children></AnchorPane>
                </content>
             </Tab>
