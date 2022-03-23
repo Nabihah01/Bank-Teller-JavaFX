@@ -74,7 +74,7 @@ public class BankTellerController {
     void mmButton(ActionEvent event){
         newBrunswickOC.setDisable(true); newarkOC.setDisable(true);
         camdenOC.setDisable(true);
-//        loyal.setDisable(false);
+        loyal.setDisable(true);
         loyal.setSelected(true);
     }
     @FXML
@@ -146,6 +146,12 @@ public class BankTellerController {
             return;
         }
 
+        if(!firstNameOC.getText().matches("[a-zA-Z]+") || !lastNameOC.getText().matches("[a-zA-Z]+")){
+            textFieldOC.setText("Invalid first or last name.");
+            clearText();
+            return;
+        }
+
         Date todayDate = new Date();
         Date date = new Date(dobOC.getValue().toString());
         if(date.compareTo(todayDate) == 1){
@@ -154,7 +160,8 @@ public class BankTellerController {
             return;
         }
 
-        Profile profile = new Profile(firstNameOC.getText() + " " + lastNameOC.getText() + " " + dobOC.getValue().toString());
+        Profile profile = new Profile(firstNameOC.getText().replaceAll("\\s","") + " "
+                + lastNameOC.getText().replaceAll("\\s","") + " " + dobOC.getValue().toString());
 
         double balance;
         try {
@@ -228,6 +235,12 @@ public class BankTellerController {
             clearText();
             return;
         }
+
+        if(!firstNameOC.getText().matches("[a-zA-Z]+") || !lastNameOC.getText().matches("[a-zA-Z]+")){
+            textFieldOC.setText("Invalid first or last name.");
+            clearText();
+            return;
+        }
         Date todayDate = new Date();
         Date date = new Date(dobOC.getValue().toString());
 
@@ -237,8 +250,8 @@ public class BankTellerController {
             return;
         }
 
-        Profile profile = new Profile(firstNameOC.getText() + " " + lastNameOC.getText()
-                + " " + dobOC.getValue().toString());
+        Profile profile = new Profile(firstNameOC.getText().replaceAll("\\s","") + " "
+                + lastNameOC.getText().replaceAll("\\s","") + " " + dobOC.getValue().toString());
 
         Account account = createAccount("C", profile, 0);
         if(account == null) {
@@ -263,6 +276,11 @@ public class BankTellerController {
             clearText();
             return;
         }
+        if(!firstName.getText().matches("[a-zA-Z]+") || !lastName.getText().matches("[a-zA-Z]+")){
+            textFieldDW.setText("Invalid first or last name.");
+            clearText();
+            return;
+        }
         Date date = new Date(dob.getValue().toString());
         Date todayDate = new Date();
         if(date.compareTo(todayDate) == 1){
@@ -271,8 +289,8 @@ public class BankTellerController {
             return;
         }
 
-        Profile profile = new Profile(firstName.getText() + " " + lastName.getText() + " "
-                + dob.getValue().toString());
+        Profile profile = new Profile(firstName.getText().replaceAll("\\s","") + " "
+                + lastName.getText().replaceAll("\\s","") + " " + dob.getValue().toString());
 
         double balance;
         try {
@@ -299,6 +317,13 @@ public class BankTellerController {
             clearText();
             return;
         }
+        int idx  = accountDatabase.callFind(account);
+        Account [] accounts = accountDatabase.getAccounts();
+        if(accounts[idx].closed){
+            textFieldDW.setText("Cannot deposit in closed account.");
+            clearText();
+            return;
+        }
         accountDatabase.deposit(account);
         textFieldDW.setText("Deposit - balance updated.");
         clearText();
@@ -313,6 +338,11 @@ public class BankTellerController {
             clearText();
             return;
         }
+        if(!firstName.getText().matches("[a-zA-Z]+") || !lastName.getText().matches("[a-zA-Z]+")){
+            textFieldDW.setText("Invalid first or last name.");
+            clearText();
+            return;
+        }
         Date date = new Date(dob.getValue().toString());
         Date todayDate = new Date();
 
@@ -321,8 +351,8 @@ public class BankTellerController {
             clearText();
             return;
         }
-        Profile profile = new Profile(firstName.getText() + " " + lastName.getText()
-                + " " + dob.getValue().toString());
+        Profile profile = new Profile(firstName.getText().replaceAll("\\s","") + " " +
+                lastName.getText().replaceAll("\\s","") + " " + dob.getValue().toString());
 
         double balance;
         try {
@@ -351,7 +381,13 @@ public class BankTellerController {
             clearText();
             return;
         }
-
+        int idx  = accountDatabase.callFind(account);
+        Account [] accounts = accountDatabase.getAccounts();
+        if(accounts[idx].closed){
+            textFieldDW.setText("Cannot withdraw from closed account.");
+            clearText();
+            return;
+        }
         boolean withdrawSuccessful;
         withdrawSuccessful = accountDatabase.withdraw(account);
         if(!withdrawSuccessful)
