@@ -11,6 +11,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
+/**
+ A GUI class to process the transactions (opening or closing an account, depositing
+ into or withdrawing from an existing account, or printing account details) entered
+ by the user through the graphical user interface and outputs the results to the
+ text area present in the GUI.
+ @author Maryam, Nabihah
+ */
+
+
 public class BankTellerController {
     AccountDatabase accountDatabase = new AccountDatabase();
     public final static double MIN_AMT_FOR_MM = 2500.00;
@@ -19,9 +28,6 @@ public class BankTellerController {
     private final static int NEW_BRUNSWICK = 0;
     private final static int NEWARK = 1;
     private final static int CAMDEN = 2;
-
-    @FXML
-    private Tab accountDatabaseTab, openCloseTab, depositWithdrawTab;
 
     @FXML
     private RadioButton checking, checkingOC, collegeChecking, collegeCheckingOC,
@@ -48,6 +54,10 @@ public class BankTellerController {
     @FXML
     private TextArea textFieldAD, textFieldDW, textFieldOC;
 
+    /**
+     * This method is called to initialize controller after root element has been
+     * processed. All elements are disabled in initial state of application. 
+     */
     @FXML
     void initialize() {
         newBrunswickOC.setDisable(true);
@@ -56,7 +66,10 @@ public class BankTellerController {
         loyal.setDisable(true);
     }
 
-    //event handling when user clicks on savings,checking,mm,or cc(disabling/enabling elements)
+    /**
+     * Event Handler for Savings radio button. Enables loyalty, disables campus buttons
+     * @param event
+     */
     @FXML
     void savingsButton(ActionEvent event) {
         newBrunswickOC.setDisable(true); newarkOC.setDisable(true);
@@ -64,12 +77,23 @@ public class BankTellerController {
         loyal.setDisable(false);
         loyal.setSelected(false);
     }
+
+    /**
+     * Event Handler for Checking radio button. Disables all elements (campus and loyalty)
+     * @param event
+     */
     @FXML
     void checkingButton(ActionEvent event){
         newBrunswickOC.setDisable(true); newarkOC.setDisable(true);
         camdenOC.setDisable(true);
         loyal.setDisable(true);
     }
+
+    /**
+     * Event Handler for MoneyMarket radio button.
+     * Disables campus and loyalty buttons. sets loyalty to be selected.
+     * @param event
+     */
     @FXML
     void mmButton(ActionEvent event){
         newBrunswickOC.setDisable(true); newarkOC.setDisable(true);
@@ -77,6 +101,12 @@ public class BankTellerController {
         loyal.setDisable(true);
         loyal.setSelected(true);
     }
+
+    /**
+     * Event Handler for College Checking radio button
+     * Enables campus radio buttons and disables loyalty button
+     * @param event
+     */
     @FXML
     void ccButton(ActionEvent event){
         newBrunswickOC.setDisable(false);
@@ -85,6 +115,12 @@ public class BankTellerController {
         loyal.setDisable(true);
     }
 
+    /**
+     * check whether account type has been selected
+     * @param isOCTab (boolean) if user is on the open/close tab of the GUI or
+     * deposit/withdraw tab
+     * @return false if no account type had been selected, true otherwise
+     */
     boolean accTypeIsSelected(boolean isOCTab) {
         if(isOCTab) {
             return checkingOC.isSelected() || savingsOC.isSelected() ||
@@ -95,6 +131,13 @@ public class BankTellerController {
         }
     }
 
+    /**
+     * Event Handler for Apply Interest and Fees button. Subtracts the fee and
+     * monthly interest from every account in the database and then prints
+     * updated balances of accounts with account information (by calling accountList
+     * from AccountDatabase) to text area in Account Database tab in GUI.
+     * @param event
+     */
     @FXML
     void applyInterestAndFees(ActionEvent event) {
         if(accountDatabase.getNumAcct() == 0) {
@@ -106,48 +149,67 @@ public class BankTellerController {
             accounts[i].balance -= accounts[i].fee();
             accounts[i].balance += accounts[i].monthlyInterest();
         }
-        textFieldAD.setText(accountDatabase.print());
+        textFieldAD.setText(accountDatabase.accountsList());
     }
 
+    /**
+     * Event Handler for Calculate Interest and Fees button. Calls
+     * accountsWithFeeAndInterest method in Account Database which returns String
+     * of all accounts with their fees and monthly interest and prints it to text
+     * area in Account Database tab in GUI.
+     * @param event
+     */
     @FXML
     void calculateInterestandFees(ActionEvent event) {
         if(accountDatabase.getNumAcct() == 0) {
             textFieldAD.setText("Account Database is empty!");
             return;
         }
-        textFieldAD.setText(accountDatabase.printFeeAndInterest());
+        textFieldAD.setText(accountDatabase.accountsWithFeeAndInterest());
     }
 
+    /**
+     * Event Handler for Print All Accounts button. Calls
+     * accountsList method in AccountDatabase to get list of all accounts
+     * as a String and prints it to text area in Account Database tab in GUI.
+     * @param event
+     */
     @FXML
     void printAccounts(ActionEvent event) {
         if(accountDatabase.getNumAcct() == 0) {
             textFieldAD.setText("Account Database is empty!");
             return;
         }
-        textFieldAD.setText(accountDatabase.print());
+        textFieldAD.setText(accountDatabase.accountsList());
     }
 
+    /**
+     * Event Handler for Print All Accounts Sorted by Type button. Calls
+     * accountsByAccountType method in AccountDatabase to get list of all accounts,
+     * sorted by type as a String and prints it to text area in Account Database
+     * tab in GUI.
+     * @param event
+     */
     @FXML
     void printByAccountType(ActionEvent event) {
         if(accountDatabase.getNumAcct() == 0) {
             textFieldAD.setText("Account Database is empty!");
             return;
         }
-        textFieldAD.setText(accountDatabase.printByAccountType());
+        textFieldAD.setText(accountDatabase.accountsByAccountType());
     }
 
+    /**
+     * Event handler for open button. This method calls the openHelper method to
+     * open an account.
+     * @param event
+     */
     @FXML
     void open(ActionEvent event) {
         if (firstNameOC.getText().isBlank() || lastNameOC.getText().isBlank() ||
                 dobOC.getValue() == null || amountOC.getText().isBlank()
                 || !accTypeIsSelected(true)) {
             textFieldOC.setText("Missing information for opening account.");
-            clearText();
-            return;
-        }
-
-        if(!firstNameOC.getText().matches("[a-zA-Z]+") || !lastNameOC.getText().matches("[a-zA-Z]+")){
-            textFieldOC.setText("Invalid first or last name.");
             clearText();
             return;
         }
@@ -176,6 +238,13 @@ public class BankTellerController {
         openHelperMethod(account);
     }
 
+    /**
+     * opens a account if account holder doesn't have an account of the same type
+     * in the database and all valid information is passed. this method can
+     * also reopen an existing closed account
+     * @param account (Account) containing information about account holder and
+     * initial balance
+     */
     void openHelperMethod(Account account) {
         boolean accountOpened;
         if(account == null) {
@@ -226,6 +295,11 @@ public class BankTellerController {
         clearText();
     }
 
+    /**
+     * Event Handler for close button. This method calls close from AccountDatabase
+     * to close an account (if exists and hasn't been closed already).
+     * @param event
+     */
     @FXML
     void close(ActionEvent event) {
         if (firstNameOC.getText().isBlank() || lastNameOC.getText().isBlank() ||
@@ -267,6 +341,12 @@ public class BankTellerController {
         clearText();
     }
 
+    /**
+     * Event Handler for deposit method. This method calls deposit in AccountDatabase
+     * and deposits money into an (open) existing account in the databse, if the
+     * amount is valid.
+     * @param event
+     */
     @FXML
     void deposit(ActionEvent event) {
         if (firstName.getText().isBlank() || lastName.getText().isBlank() ||
@@ -329,6 +409,12 @@ public class BankTellerController {
         clearText();
     }
 
+    /**
+     * Event Handler for withdraw button. This method calls withdraw in AccountDatabase
+     * and withdraws money from an (open) existing account in database if amount is
+     * valid and enough money exists with the account.
+     * @param event
+     */
     @FXML
     void withdraw(ActionEvent event) {
         if (firstName.getText().isBlank() || lastName.getText().isBlank() ||
@@ -397,6 +483,10 @@ public class BankTellerController {
         clearText();
     }
 
+    /**
+     * clears all the components in open/close and deposit/withdraw tabs in GUI
+     * once an event occurs/button is pressed.
+     */
     private void clearText(){
         amount.clear();
         amountOC.clear();
@@ -420,6 +510,12 @@ public class BankTellerController {
         loyal.setDisable(true);
     }
 
+    /**
+     * converts a string specifying campus to equivalent integer (campus code)
+     * @param code (String) campus name
+     * @return (int) campus code; 1 for New Brunswick, 2 for Newark, 3
+     * for Camden
+     */
     private int toIntCampusCode(String code){
         if(code.equals("New Brunswick")) {
             return NEW_BRUNSWICK;
@@ -432,6 +528,14 @@ public class BankTellerController {
         }
     }
 
+    /**
+     * creates an instance of Account (checking, savings, money market,
+     * or college checking) depending on what command user inputs
+     * @param command (String) can be O/C/D/W for open/close/deposit/withdraw respectively
+     * @param profile (Profile) specifying details of account holder
+     * @param balance (double) specifying initial balance in account being created
+     * @return an instance of Account
+     */
     public Account createAccount(String command, Profile profile, double balance) {
         if(((RadioButton) accountType.getSelectedToggle()).getText().equals("Checking")){
             return new Checking(profile, false, balance);

@@ -5,8 +5,8 @@ package com.example.bank_teller;
  *
  * An account can be opened, reopened, closed, and searched for within the database.
  * Deposits and withdrawals can be made to and from accounts, respectively.
- * All accounts can printed as they appear in the database, or sorted by account type,
- * or printed with their monthly interest and fee listed.
+ * All accounts can be returned as a String as they appear in the database, or sorted by account type,
+ * or returned as a String with their monthly interest and fee listed.
  * @author Nabihah, Maryam
  */
 public class AccountDatabase {
@@ -143,9 +143,10 @@ public class AccountDatabase {
     }
 
     /**
-     * Print all accounts in accounts array
+     * Returns all of the accounts in accounts array
+     * @return String consisting of all accounts in the database
      */
-    public String print() {
+    public String accountsList() {
         String output = "";
         for(int i = 0; i < this.numAcct; i++){
             output = output.concat(this.accounts[i].toString() + "\n");
@@ -154,9 +155,10 @@ public class AccountDatabase {
     }
 
     /**
-     * Prints all accounts ordered by Account Type
+     * Returns all accounts ordered by Account Type
+     * @return String consisting of all accounts ordered by Account Type
      */
-    public String printByAccountType() {
+    public String accountsByAccountType() {
         for (int i = 1; i < numAcct; i++) {
             Account acc = accounts[i];
             int j = i - 1;
@@ -167,13 +169,15 @@ public class AccountDatabase {
             }
             accounts[j + 1] = acc;
         }
-        return print();
+        return accountsList();
     }
 
     /**
-     * Prints all the accounts and their monthly fees and monthly interest
+     * Returns all the accounts and their monthly fees and monthly interest
+     * @return String consisting of accounts in database, each accounts respective
+     * fee and monthly interest
      */
-    public String printFeeAndInterest() {
+    public String accountsWithFeeAndInterest() {
         String output = "";
         for(int i = 0; i < this.numAcct; i++){
             output = output.concat(this.accounts[i].toString() + "::fee $" +
