@@ -2,11 +2,9 @@ package com.example.bank_teller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -64,11 +62,12 @@ public class BankTellerController {
         newarkOC.setDisable(true);
         camdenOC.setDisable(true);
         loyal.setDisable(true);
+        checking.setSelected(false);
     }
 
     /**
      * Event Handler for Savings radio button. Enables loyalty, disables campus buttons
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void savingsButton(ActionEvent event) {
@@ -80,7 +79,7 @@ public class BankTellerController {
 
     /**
      * Event Handler for Checking radio button. Disables all elements (campus and loyalty)
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void checkingButton(ActionEvent event){
@@ -92,7 +91,7 @@ public class BankTellerController {
     /**
      * Event Handler for MoneyMarket radio button.
      * Disables campus and loyalty buttons. sets loyalty to be selected.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void mmButton(ActionEvent event){
@@ -105,7 +104,7 @@ public class BankTellerController {
     /**
      * Event Handler for College Checking radio button
      * Enables campus radio buttons and disables loyalty button
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void ccButton(ActionEvent event){
@@ -136,7 +135,7 @@ public class BankTellerController {
      * monthly interest from every account in the database and then prints
      * updated balances of accounts with account information (by calling accountList
      * from AccountDatabase) to text area in Account Database tab in GUI.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void applyInterestAndFees(ActionEvent event) {
@@ -157,7 +156,7 @@ public class BankTellerController {
      * accountsWithFeeAndInterest method in Account Database which returns String
      * of all accounts with their fees and monthly interest and prints it to text
      * area in Account Database tab in GUI.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void calculateInterestandFees(ActionEvent event) {
@@ -172,7 +171,7 @@ public class BankTellerController {
      * Event Handler for Print All Accounts button. Calls
      * accountsList method in AccountDatabase to get list of all accounts
      * as a String and prints it to text area in Account Database tab in GUI.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void printAccounts(ActionEvent event) {
@@ -188,7 +187,7 @@ public class BankTellerController {
      * accountsByAccountType method in AccountDatabase to get list of all accounts,
      * sorted by type as a String and prints it to text area in Account Database
      * tab in GUI.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void printByAccountType(ActionEvent event) {
@@ -202,7 +201,7 @@ public class BankTellerController {
     /**
      * Event handler for open button. This method calls the openHelper method to
      * open an account.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void open(ActionEvent event) {
@@ -239,7 +238,7 @@ public class BankTellerController {
     }
 
     /**
-     * opens a account if account holder doesn't have an account of the same type
+     * opens an account if account holder doesn't have an account of the same type
      * in the database and all valid information is passed. this method can
      * also reopen an existing closed account
      * @param account (Account) containing information about account holder and
@@ -298,7 +297,7 @@ public class BankTellerController {
     /**
      * Event Handler for close button. This method calls close from AccountDatabase
      * to close an account (if exists and hasn't been closed already).
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void close(ActionEvent event) {
@@ -345,7 +344,7 @@ public class BankTellerController {
      * Event Handler for deposit method. This method calls deposit in AccountDatabase
      * and deposits money into an (open) existing account in the databse, if the
      * amount is valid.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void deposit(ActionEvent event) {
@@ -413,7 +412,7 @@ public class BankTellerController {
      * Event Handler for withdraw button. This method calls withdraw in AccountDatabase
      * and withdraws money from an (open) existing account in database if amount is
      * valid and enough money exists with the account.
-     * @param event
+     * @param event an Event representing some type of action
      */
     @FXML
     void withdraw(ActionEvent event) {
